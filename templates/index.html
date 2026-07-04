@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Doubt Resolution Platform</title>
+    <script>
+    function checkInternet(){
+        if(!navigator.onLine){
+            alert("No Internet Connection!");
+            window.location.href = "/no_internet";
+        }
+    }
+
+    window.onload = checkInternet;
+    window.addEventListener("offline", checkInternet);
+    </script>
+
+    <style>
+        body{
+            font-family: Arial;
+            margin:0;
+            background:#f5f5f5;
+            text-align:center;
+        }
+
+        header{
+            background:#2b6cb0;
+            color:white;
+            padding:15px;
+            text-align:left;
+            padding-left:40px;
+        }
+
+        .hero{
+            background:#1f3b57;
+            color:white;
+            padding:80px 20px;
+        }
+
+        .subtitle{
+            font-size:18px;
+            margin:10px 0;
+        }
+
+        .buttons{
+            margin-top:30px;
+        }
+
+        button{
+            padding:12px 25px;
+            margin:10px;
+            border:none;
+            border-radius:6px;
+            background:#3182ce;
+            color:white;
+            font-size:16px;
+            cursor:pointer;
+        }
+
+        .register{
+            background:#38a169;
+        }
+
+        button:hover{
+            opacity:0.9;
+        }
+
+        .features{
+            padding:50px;
+            background:#eeeeee;
+        }
+
+        .cards{
+            display:flex;
+            justify-content:center;
+            gap:20px;
+            flex-wrap:wrap;
+            margin-top:30px;
+        }
+
+        .card{
+            background:white;
+            padding:25px;
+            width:220px;
+            border-radius:10px;
+            box-shadow:0px 3px 10px rgba(0,0,0,0.1);
+        }
+    </style>
+
+</head>
+
+<body>
+
+<header>
+    <h2>🎓 Student Doubt Resolution Platform</h2>
+</header>
+
+<section class="hero">
+
+    <h1>🎓 Welcome to Student Doubt Resolution Platform</h1>
+
+    <p class="subtitle">
+        Network-Based Multi-Teacher Doubt Solver Platform
+    </p>
+
+    <p>
+        Connect with expert teachers, clear your doubts, and excel in your studies.
+    </p>
+    <div class="buttons">
+        <button onclick="window.location.href='/login'">🔊 Login</button>
+        <button class="register" onclick="window.location.href='/register'">👤 Register</button>
+    </div>
+    
+
+</section>
+
+<section class="features">
+
+<h2>Why Choose Student Doubt Resolution Platform?</h2>
+
+<div class="cards">
+
+<div class="card">
+<h3>👨‍🏫 Expert Teachers</h3>
+<p>Get help from multiple teachers instantly.</p>
+</div>
+
+<div class="card">
+<h3>📄 Easy Doubt Submission</h3>
+<p>Submit doubts anytime from anywhere.</p>
+</div>
+
+<div class="card">
+<h3>⏰ Quick Responses</h3>
+<p>Teachers respond quickly to student queries.</p>
+</div>
+
+<div class="card">
+<h3>🛡 Secure Platform</h3>
+<p>Your data and doubts are safe.</p>
+</div>
+
+</div>
+
+</section>
+
+</body>
+</html>

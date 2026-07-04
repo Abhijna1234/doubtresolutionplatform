@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Student Dashboard</title>
+<script>
+function checkInternet(){
+    if(!navigator.onLine){
+        alert("No Internet Connection!");
+        window.location.href = "/no_internet";
+    }
+}
+
+window.onload = checkInternet;
+window.addEventListener("offline", checkInternet);
+</script>
+
+<style>
+body{
+margin:0;
+font-family:Arial;
+background:#f5f5f5;
+}
+
+header{
+background:#2b6cb0;
+color:white;
+padding:15px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.top-right{
+display:flex;
+gap:15px;
+align-items:center;
+}
+
+.logout{
+background:white;
+color:#2b6cb0;
+padding:8px 15px;
+border-radius:6px;
+text-decoration:none;
+}
+
+.container{
+padding:20px;
+}
+
+.blue-box{
+background:#2b6cb0;
+color:white;
+padding:20px;
+border-radius:10px;
+}
+
+.actions{
+display:flex;
+gap:30px;
+margin-top:25px;
+}
+
+.actions{
+display:flex;
+gap:30px;
+margin-top:25px;
+}
+
+.card{
+background:white;
+padding:30px;
+width:260px;
+border-radius:12px;
+box-shadow:0px 5px 15px rgba(0,0,0,0.15);
+cursor:pointer;
+text-align:center;
+font-size:18px;
+font-weight:bold;
+transition:0.3s;
+}
+
+.card:hover{
+transform:scale(1.05);
+}
+
+.form-box{
+background:white;
+padding:20px;
+border-radius:10px;
+margin-top:20px;
+}
+
+input, select, textarea{
+width:100%;
+padding:10px;
+margin:10px 0;
+border-radius:6px;
+border:1px solid #ccc;
+}
+
+button{
+background:#2b6cb0;
+color:white;
+padding:10px;
+border:none;
+border-radius:6px;
+cursor:pointer;
+}
+
+.doubt{
+background:white;
+padding:15px;
+margin-top:15px;
+border-radius:8px;
+}
+
+.file-box{
+border:2px dashed #2b6cb0;
+padding:15px;
+text-align:center;
+border-radius:8px;
+cursor:pointer;
+color:#2b6cb0;
+margin-top:5px;
+}
+
+.file-box input{
+display:block;
+margin-top:10px;
+}
+
+/* Fix textarea spacing */
+textarea{
+width:100%;
+padding:10px;
+margin:10px 0;
+border-radius:6px;
+border:1px solid #ccc;
+resize:vertical;
+min-height:120px;
+box-sizing:border-box;
+}
+
+/* Fix file box spacing */
+.file-box{
+border:2px dashed #2b6cb0;
+padding:15px;
+text-align:center;
+border-radius:8px;
+cursor:pointer;
+color:#2b6cb0;
+margin:10px 0;
+}
+
+/* Fix button properly */
+button{
+width:100%;
+padding:12px;
+margin-top:10px;
+background:#2b6cb0;
+color:white;
+border:none;
+border-radius:6px;
+cursor:pointer;
+font-size:16px;
+box-sizing:border-box;
+}
+
+/* Prevent overflow */
+.form-box{
+overflow:hidden;
+}
+
+button:hover{
+    background:#1e4e8c;
+}
+
+.doubt-box{
+background:white;
+padding:20px;
+margin-top:15px;
+border-radius:10px;
+box-shadow:0px 3px 10px rgba(0,0,0,0.1);
+}
+
+.doubt-box h4{
+color:#2b6cb0;
+margin-bottom:5px;
+}
+
+.doubt-box small{
+color:gray;
+font-size:12px;
+}
+
+.doubt-box p{
+margin:8px 0;
+}
+
+.green-box{
+background:#38a169;   /* green */
+color:white;
+padding:20px;
+border-radius:10px;
+margin-top:20px;
+}
+
+.green-box{
+background: linear-gradient(to right, #38a169, #68d391);
+color:white;
+padding:20px;
+border-radius:10px;
+margin-top:20px;
+}
+
+/* Container for both boxes */
+.action-container{
+display:flex;
+gap:30px;
+margin-top:25px;
+}
+
+/* Big white box */
+.action-box{
+background:white;
+padding:40px;
+width:260px;
+border-radius:12px;
+box-shadow:0px 5px 15px rgba(0,0,0,0.15);
+text-align:center;
+}
+
+/* Blue submit button */
+.submit-btn{
+background:#2b6cb0;
+color:white;
+padding:12px 20px;
+border:none;
+border-radius:6px;
+font-size:16px;
+cursor:pointer;
+width:auto;
+display:inline-block;
+}
+
+
+/* View button */
+.view-btn{
+background:#38a169;
+color:white;
+padding:12px 20px;
+border:none;
+border-radius:6px;
+font-size:16px;
+cursor:pointer;
+}
+
+/* Hover effects */
+.submit-btn:hover{
+background:#1e4e8c;
+}
+
+.view-btn:hover{
+background:#2f855a;
+}
+
+.action-container{
+    justify-content:center;
+}
+
+.alert{
+padding:12px;
+margin:15px 0;
+border-radius:8px;
+text-align:center;
+font-weight:bold;
+}
+
+.success{
+background:#d4edda;
+color:#155724;
+}
+</style>
+
+<script>
+function showSubmit(){
+document.getElementById("submitForm").style.display="block";
+document.getElementById("viewDoubts").style.display="none";
+}
+
+function showView(){
+document.getElementById("submitForm").style.display="none";
+document.getElementById("viewDoubts").style.display="block";
+}
+</script>
+
+</head>
+
+<body>
+
+<header>
+    <h3>🎓 Student Doubt Resolution Platform</h3>
+
+    <div class="top-right">
+        <span>👤 {{name}} (Student)</span>
+        <a href="/logout" class="logout">🚪 Logout</a>
+    </div>
+</header>
+
+<div class="container">
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert {{category}}">{{message}}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+<div class="blue-box">
+    <h2>Student Dashboard</h2>
+    <p>Welcome {{name}}! Submit your doubts and get answers from expert teachers.</p>
+</div>
+
+<div class="action-container">
+
+    <div class="action-box">
+        <button class="submit-btn" onclick="showSubmit()">
+            ➕ Submit New Doubt
+        </button>
+    </div>
+
+    <div class="action-box">
+        <button class="view-btn" onclick="showView()">
+            📋 View My Doubts
+        </button>
+    </div>
+
+</div>
+
+<!-- Submit Form -->
+<div id="submitForm" class="form-box" style="display:none;">
+
+<h3>❓ Submit a New Doubt</h3>
+
+<form method="POST" action="/submit_doubt" enctype="multipart/form-data">
+
+    <!-- Subject -->
+    <label>📚 Subject:</label>
+    <select name="subject" required>
+
+        {% if session['branch'] in ['MCA','BCA'] %}
+            <option>Python</option>
+            <option>Java</option>
+            <option>DBMS</option>
+            <option>Programming</option>
+            <option>Artificial Intelliegnce</option>
+            <option>Cloud computing</option>
+            <option>Algorithm</option>
+            <option>Mathematics</option>
+            <option>Mini Project</option>
+            <option>Other</option>
+        {% elif session['branch'] == 'MBA' %}
+            <option>Human resource Management</option>
+            <option>Managerial Economics</option>
+            <option>Marketing Management</option>
+            <option>Financial Accounting</option>
+            <option>Business Analytics</option>
+            <option>Quantitative Methods</option>
+            <option>Operational Management</option>
+            <option>Others</option>
+        {% elif session['branch'] == 'BCOM' %}
+            <option>Law and Taxation</option>
+            <option>Accounting</option>
+            <option>Economics</option>
+            <option>Management</option>
+            <option>Finance</option>
+            <option>Quantitative Techniques</option>
+            <option>Taxation</option>
+            <option>other</option>
+        {% elif session['branch'] == 'BBA' %}
+            <option>Marketing Management</option>
+            <option>Business Economics</option>
+            <option>Principles of Management</option>
+            <option>Human Resource Management(HRM)</option>
+            <option>Financial Accounting</option>
+            <option>Business Law</option>
+            <option>Business Mathematics and Statistics</option>
+            <option>Other</option>
+        {% endif %}
+
+    </select>
+
+    <!-- Question -->
+    <label>📖 Question Description:</label>
+    <textarea name="question" placeholder="Describe your doubt in detail..." required></textarea>
+
+    <!-- File Upload -->
+    <label>📎 Attach File (Optional):</label>
+    <div class="file-box">
+        ☁️ Choose File
+        <input type="file" name="file" accept=".txt,.pdf,.doc,.docx,.jpg, .png, .mp4,.avi,.mov">
+    </div>
+
+    <small>Supported: txt, pdf, doc, docx, jpg,png,mp4,avi,mov</small>
+
+    <!-- Submit Button -->
+    <button type="submit">📨 Submit Doubt</button>
+
+</form>
+
+</div>
+
+<!-- View Doubts--> 
+ <div id="viewDoubts" style="display:none;">
+
+<div class="green-box">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div>
+            <h2>📋 My Doubts</h2>
+            <p>View all your submitted doubts and their responses</p>
+        </div>
+
+        <button class="submit-btn" onclick="showSubmit()">
+            ➕ Submit New Doubt
+        </button>
+    </div>
+</div>
+
+
+{% for d in doubts %}
+<div class="doubt-box">
+
+    <!-- Header -->
+    <h4>
+        📘 {{ d[1] }} | 🎓 {{ d[2] }} | 📅 {{ d[10] }}
+    </h4>
+
+    <!-- Question -->
+    <p><b>❓ Question:</b> {{ d[4] }}</p>
+
+    <!-- Student File -->
+    {% if d[5] %}
+    <p>
+        📎 <a href="{{ url_for('static', filename='uploads/' ~ d[5]) }}" target="_blank">View Your File</a>
+        | 
+        <a href="{{ url_for('static', filename='uploads/' ~ d[5]) }}" download>⬇ Download</a>
+    </p>
+    {% endif %}
+
+    <!-- Answer -->
+    <p><b>✅ Answer:</b> 
+        {{ d[6] if d[6] else "Not answered yet" }}
+    </p>
+    <p style="color:gray;">
+    💬 {{ "1 Response" if d[6] else "No Response Yet" }}</p>
+
+    <!-- Teacher File -->
+    <hr>
+
+<p><b>✅ Teacher Response:</b></p>
+
+{% if d[6] %}
+    <p style="color:green;">{{ d[6] }}</p>
+
+    <!-- 👨‍🏫 Teacher Name -->
+    <p style="color:#2b6cb0; font-weight:bold;">
+        👨‍🏫 Answered by: {{ d[8] if d[8] else "Unknown" }}
+    </p>
+    <p style="color:gray;">🕒 {{ d[9] }}
+    </p>
+
+{% else %}
+    <p style="color:orange;">No response yet</p>
+{% endif %}
+
+<!-- 🔥 TEACHER FILE / VIDEO -->
+{% if d[7] %}
+
+   <!--{% if d[7].endswith('.mp4') or d[7].endswith('.avi') or d[7].endswith('.mov') %} -->
+        
+        <!-- 🎥 VIDEO -->
+        <video width="100%" style="max-height:400px;" controls>
+            <source src="{{ url_for('static', filename='uploads/' ~ d[7]) }}">
+        </video>
+
+        <br>
+
+        <a href="{{ url_for('static', filename='uploads/' ~ d[7]) }}" download>
+            ⬇ Download Video
+        </a>
+
+    {% else %}
+        
+        <!-- 📄 FILE -->
+        <p>
+        📎 <a href="{{ url_for('static', filename='uploads/' ~ d[7]) }}" target="_blank">
+            View Teacher File
+        </a>
+        |
+        <a href="{{ url_for('static', filename='uploads/' ~ d[7]) }}" download>
+            ⬇ Download File
+        </a>
+        </p>
+
+    {% endif %}
+
+{% endif %}
+
+    <!-- Delete Button 
+    <form method="POST" action="/delete_doubt/{{ d[0] }}">
+    <button style="background:red; margin-top:10px;" onclick="return confirm('Are you sure you want to delete this doubt?')">
+        🗑 Delete Doubt</button>
+    </form>-->
+    <form method="POST" action="/delete_doubt/{{ d[0] }}">
+    <button 
+        style="background:red; margin-top:10px; padding:6px 10px; font-size:12px; width:auto; border:none; border-radius:5px; color:white; cursor:pointer;"
+        onclick="return confirm('Are you sure you want to delete this doubt?')">
+        🗑 Delete
+    </button>
+</form>
+
+</div>
+{% endfor %}
+
+</div>
+
+</body>
+</html>

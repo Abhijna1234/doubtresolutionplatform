@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register - Student Doubt Resolution Platform</title>
+    <script>
+    function checkInternet(){
+        if(!navigator.onLine){
+            alert("No Internet Connection!");
+            window.location.href = "/no_internet";
+        }
+    }
+
+    window.onload = checkInternet;
+    window.addEventListener("offline", checkInternet);
+    </script>
+    <style>
+        body{
+            font-family: Arial;
+            margin:0;
+            background: linear-gradient(to right, #4facfe, #43e97b);
+        }
+
+        header{
+            background:#2b6cb0;
+            color:white;
+            padding:15px;
+            padding-left:40px;
+            font-size:20px;
+        }
+
+        .container{
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            height:90vh;
+        }
+
+        .form-box{
+            background:white;
+            padding:30px;
+            width:350px;
+            border-radius:12px;
+            box-shadow:0px 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .form-box h2{
+            text-align:center;
+            color:#2b6cb0;
+            margin-bottom:10px;
+        }
+
+        .form-box p{
+            text-align:center;
+            color:gray;
+            font-size:14px;
+        }
+
+        form{
+            display:flex;
+            flex-direction:column;
+            gap:12px;
+            margin-top:20px;
+        }
+
+        label{
+            font-size:14px;
+            font-weight:bold;
+        }
+
+        input, select{
+            padding:10px;
+            border-radius:6px;
+            border:1px solid #ccc;
+            width:100%;
+        }
+
+        button{
+            padding:12px;
+            background:#2b6cb0;
+            color:white;
+            border:none;
+            border-radius:6px;
+            cursor:pointer;
+            font-size:16px;
+        }
+
+        button:hover{
+            background:#1e4e8c;
+        }
+
+        .bottom-text{
+            text-align:center;
+            margin-top:15px;
+        }
+
+        .bottom-text a{
+            color:#2b6cb0;
+            text-decoration:none;
+            font-weight:bold;
+        }
+
+        .alert{
+            padding:10px;
+            margin-bottom:15px;
+            border-radius:6px;
+            text-align:center;
+            font-weight:bold;
+        }
+
+        .success{
+            background:#d4edda;
+            color:#155724;
+        }
+
+        .error{
+            background:#f8d7da;
+            color:#721c24;
+        }
+    </style>
+
+</head>
+
+<body>
+
+<header>
+    🎓 Student Doubt Resolution Platform
+</header>
+
+<div class="container">
+
+<div class="form-box">
+
+    <h2>👤 Register</h2>
+    <p>Create your account to get started</p>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert {{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <form method="POST">
+
+        <!-- Role -->
+        <label>I am a:</label>
+        <select name="role" required>
+            <option value="">Select</option>
+            <option value="student">Student</option>
+            <option value="teacher">Teacher</option>
+        </select>
+
+        <!-- Name -->
+        <label>👤 Name:</label>
+        <input type="text" name="name" placeholder="Enter your name" required>
+
+        <!-- Email -->
+        <label>📧 Email:</label>
+        <input type="email" name="email" placeholder="Enter your email" required>
+
+        <!-- Branch -->
+        <label>🎓 Branch:</label>
+        <select name="branch" required>
+            <option value="">Select Branch</option>
+            <option>BCA</option>
+            <option>BCOM</option>
+            <option>BBA</option>
+            <option>MCA</option>
+            <option>MBA</option>
+        </select>
+
+        <!-- Password -->
+        <label>🔒 Password:</label>
+        <input type="password" name="password" placeholder="Create your password" required>
+
+        <!-- Button -->
+        <button type="submit">✅ Register</button>
+
+    </form>
+
+    <div class="bottom-text">
+        Already have an account? 
+        <a href="/login">Login here</a>
+    </div>
+
+</div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Admin Dashboard</title>
+<script>
+function checkInternet(){
+    if(!navigator.onLine){
+        alert("No Internet Connection!");
+        window.location.href = "/no_internet";
+    }
+}
+
+window.onload = checkInternet;
+window.addEventListener("offline", checkInternet);
+</script>
+
+<style>
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #eef2f7;
+    margin: 0;
+}
+
+/* HEADER */
+header {
+    background: #1e3a8a;
+    color: white;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h2 {
+    margin: 0;
+}
+
+.logout {
+    background: white;
+    color: #1e3a8a;
+    padding: 6px 12px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* CONTAINER */
+.container {
+    padding: 25px;
+}
+
+/* FLASH MESSAGE */
+.flash {
+    background: #d1fae5;
+    color: #065f46;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+/* ANALYTICS */
+.analytics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.box {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+    transition: transform 0.3s;
+    cursor: pointer;
+}
+.box:hover {
+    transform: translateY(-8px) scale(1.02);
+}
+
+/* COLORS */
+.student-box {
+    background: linear-gradient(135deg, #3b82f6, #1e40af);
+}
+
+.teacher-box {
+    background: linear-gradient(135deg, #ef4444, #991b1b);
+}
+
+.admin-box {
+    background: linear-gradient(135deg, #22c55e, #166534);
+}
+
+.doubt-box-card {
+    background: linear-gradient(135deg, #facc15, #ca8a04);
+    color: black;
+}
+.box h3 {
+    font-size: 28px;
+    margin: 10px 0;
+}
+
+.box p {
+    font-size: 16px;
+    opacity: 0.9;
+}
+
+.box:hover {
+    transform: translateY(-5px);
+}
+
+.box h3 {
+    margin: 10px 0 5px;
+    font-size: 22px;
+    color: #1e3a8a;
+}
+
+/* TABLE */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+}
+
+th, td {
+    padding: 12px;
+    text-align: center;
+}
+
+th {
+    background: #1e3a8a;
+    color: white;
+}
+
+tr:nth-child(even) {
+    background: #f9fafb;
+}
+
+/* BUTTON */
+.delete-btn {
+    background: #dc2626;
+    color: white;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.delete-btn:hover {
+    background: #b91c1c;
+
+}
+.doubt-box {
+    background: white;
+    padding: 20px;
+    margin-top: 15px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+.container {
+    padding: 30px;
+}
+
+</style>
+<script>
+function hideAll(){
+    let s = document.getElementById("studentsSection");
+    let t = document.getElementById("teachersSection");
+    let a = document.getElementById("adminsSection");
+    let d = document.getElementById("doubtsSection");
+
+    if(s) s.style.display="none";
+    if(t) t.style.display="none";
+    if(a) a.style.display="none";
+    if(d) d.style.display="none";
+}
+
+function showStudents(){
+    hideAll();
+    document.getElementById("studentsSection").style.display="block";
+}
+
+function showTeachers(){
+    hideAll();
+    document.getElementById("teachersSection").style.display="block";
+}
+
+function showAdmins(){
+    hideAll();
+    document.getElementById("adminsSection").style.display="block";
+}
+
+function showDoubts(){
+    hideAll();
+    document.getElementById("doubtsSection").style.display="block";
+}
+</script>
+</head>
+
+<body>
+
+<header>
+    <h2>👨‍💼 Admin Dashboard</h2>
+    <div>
+        {{ session['name'] }} (Admin)
+        <a href="/logout" class="logout">Logout</a>
+    </div>
+</header>
+
+<div class="container">
+
+<!-- FLASH MESSAGE -->
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <div class="flash">
+        {{ messages[0] }}
+    </div>
+  {% endif %}
+{% endwith %}
+
+<div style="background:linear-gradient(to right,#1e3a8a,#2563eb); color:white; padding:25px; border-radius:12px; margin-bottom:25px;">
+    <h2>Welcome, {{ session['name'] }} 👋</h2>
+    <p>Manage students, teachers, and track all doubts in one place.</p>
+</div>
+
+<!-- ANALYTICS -->
+<div class="analytics">
+    <div class="box student-box" onclick="showStudents()">
+        👩‍🎓
+        <h3>{{ student_count }}</h3>
+        <p>Students</p>
+    </div>
+
+    <div class="box teacher-box"  onclick="showTeachers()">
+        👨‍🏫
+        <h3>{{ teacher_count }}</h3>
+        <p>Teachers</p>
+    </div>
+
+    <div class="box admin-box" onclick="showAdmins()">
+        👨‍💼
+        <h3>{{ admin_count }}</h3>
+        <p>Admins</p>
+    </div>
+
+    <div class="box doubt-box-card" onclick="showDoubts()">
+        📊
+        <h3>{{ total_doubts }}</h3>
+        <p>Total Doubts</p>
+    </div>
+</div>
+
+<div id="studentsSection" style="display:none; margin-top:20px;">
+
+<h3>👩‍🎓 Students</h3>
+
+<table>
+<tr>
+<th>Name</th>
+<th>Email</th>
+<th>Branch</th>
+<th>Registered On</th>
+<th>Action</th>
+</tr>
+
+{% for s in students %}
+<tr>
+<td>{{ s[1] }}</td>
+<td>{{ s[2] }}</td>
+<td>{{ s[4] }}</td>
+<td>{{ s[5] }}</td>
+
+<td>
+<form action="/delete_user/{{ s[0] }}" method="POST">
+<button class="delete-btn"
+onclick="return confirm('Delete this student?')">
+🗑 Delete
+</button>
+</form>
+</td>
+
+</tr>
+{% endfor %}
+</table>
+</div>
+
+<div id="teachersSection" style="display:none; margin-top:20px;">
+<h3>👨‍🏫 Teachers</h3>
+
+<table>
+<tr>
+<th>Name</th>
+<th>Email</th>
+<th>Branch</th>
+<th>Registered On</th>
+<th>Action</th>
+</tr>
+
+{% for t in teachers %}
+<tr>
+<td>{{ t[1] }}</td>
+<td>{{ t[2] }}</td>
+<td>{{ t[4] }}</td>
+<td>{{ t[5] }}</td>
+
+<td>
+<form action="/delete_user/{{ t[0] }}" method="POST">
+<button class="delete-btn"
+onclick="return confirm('Delete this teacher?')">
+🗑 Delete
+</button>
+</form>
+</td>
+
+</tr>
+{% endfor %}
+</table>
+</div>
+
+<div id="adminsSection" style="display:none; margin-top:20px;">
+
+<h3>👨‍💼 Admins</h3>
+
+<table>
+<tr>
+<th>Name</th>
+<th>Email</th>
+<th>Registered On</th>
+</tr>
+
+{% for a in users %}
+{% if a[3] == 'admin' %}
+<tr>
+<td>{{ a[1] }}</td>
+<td>{{ a[2] }}</td>
+<td>{{ a[5] }}</td>
+</tr>
+{% endif %}
+{% endfor %}
+
+</table>
+
+</div>
+
+<div id="doubtsSection" style="display:none;margin-top:20px;">
+
+<h3>📋 All Doubts & Responses</h3>
+{% if doubts %}
+
+{% for d in doubts %}
+<div class="doubt-box">
+
+<h4>
+👤 {{ d[1] }} | 🎓 {{ d[2] }} | 📘 {{ d[3] }} | 📅 {{ d[9] }}
+</h4>
+
+<p><b>❓ Question:</b> {{ d[4] }}</p>
+
+<!-- Student File -->
+{% if d[5] %}
+<p>
+📎 <a href="{{ url_for('static', filename='uploads/' ~ d[5]) }}" target="_blank">
+View Student File
+</a>
+|
+<a href="{{ url_for('static', filename='uploads/' ~ d[5]) }}" download>
+⬇ Download
+</a>
+</p>
+{% else %}
+<p style="color:gray;">No file uploaded</p>
+{% endif %}
+
+<hr>
+
+<p><b>✅ Teacher Response:</b></p>
+{% if d[6] %}
+<p style="color:green;">{{ d[6]}}</p>
+<p style="color:#1e3a8a; font-weight:bold;">👨‍🏫 Answered by: {{ d[8] if d[8] else "Not answered yet" }}
+{% else %}
+<p style="color:orange;">No response yet</p>
+{% endif %}
+
+{% if d[7] %}
+    {% if d[7].endswith('.mp4') or d[7].endswith('.avi') or d[7].endswith('.mov') %}
+        <video width="100%"  style="max-height:350px;" controls>
+            <source src="{{ url_for('static', filename='uploads/' ~ d[7]) }}" type="video/mp4">
+        </video>
+        <br>
+            <a href="{{ url_for('static', filename='uploads/' ~ d[7]) }}" download>
+            ⬇ Download Video </a>
+    {% else %}
+
+       <p> 📎 <a href="{{ url_for('static', filename='uploads/' ~ d[7]) }}" target="_blank">
+        View Teacher File
+        </a>
+        |
+        <a href="{{ url_for('static', filename='uploads/' ~ d[7]) }}">
+        ⬇ Download</a>
+        </p>
+
+    {% endif %}
+{% endif %}
+
+</div>
+{% endfor %}
+
+{% else %}
+    <p style="text-align:center; color:gray;">No doubts available</p>
+{% endif %}
+
+</div>
+
+
+
+</body>
+</html>
